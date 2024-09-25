@@ -97,14 +97,7 @@
 
 	// Service Worker Registration
 	const registerServiceWorker = () => {
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.register('/password-generator/sw.js', {scope: '/password-generator/'}).then(
-				(reg) => console.log('Service worker registration successful:', reg),
-				(err) => console.error(`Service worker registration failed: ${err}`)
-			);
-		} else {
-			console.error('Service workers are not supported.');
-		}
+
 	}
 
 	// Resize Window Logic
@@ -222,7 +215,7 @@
 	}
 
 	const init = () => {
-		registerServiceWorker();
+		// registerServiceWorker();
 		handleWindowResize();
 		setupDefaultConfig();
 		setupEventListeners();

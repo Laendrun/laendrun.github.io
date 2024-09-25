@@ -1,4 +1,4 @@
-const VERSION = '1.2.8';
+const VERSION = '1.2.9';
 const CACHE_NAME = `password-generator-${VERSION}`;
 const GHPATH = '/password-generator';
 const APP_STATIC_RESOURCES = [
