@@ -1,4 +1,4 @@
-const VERSION = '1.2.9';
+const VERSION = '1.2.10';
 const CACHE_NAME = `password-generator-${VERSION}`;
 const GHPATH = '/password-generator';
 const APP_STATIC_RESOURCES = [
@@ -38,7 +38,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
 	if (e.request.mode === 'navigate') {
-		e.respondWith(caches.match('/'));
+		e.respondWith(caches.match(`${GHPATH}/`));
 		return;
 	}
 
