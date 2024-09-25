@@ -1,12 +1,13 @@
-const VERSION = '1.1.5';
+const VERSION = '1.2.7';
 const CACHE_NAME = `password-generator-${VERSION}`;
+const GHPATH = '/password-generator';
 const APP_STATIC_RESOURCES = [
-	"/",
-	"/index.html",
-	"/styles.css",
-	"/app.js",
-	"/words.js",
-	"icons/android/android-launchericon-512-512.png"
+	`${GHPATH}/`,
+	`${GHPATH}/index.html`,
+	`${GHPATH}/styles.css`,
+	`${GHPATH}/app.js`,
+	`${GHPATH}/words.js`,
+	`${GHPATH}/icons/android/android-launchericon-512-512.png`
 ];
 
 self.addEventListener('install', (e) => {

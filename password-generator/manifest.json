@@ -1,7 +1,8 @@
 {
 	"short_name": "Générateur de mot de passes - Laendrun",
 	"description": "Générez des mots de passes complexes de manières sécurisées directement sur votre appareil. Soit des mots de passes complètement aléatoires, soit des mots de passes avec des combinaisons de mots français.",
-	"start_url": "/",
+	"start_url": "/password-generator/",
+	"scope": "/password-generator/",
 	"icons": [
 		{
 			"src": "icons/android/android-launchericon-512-512.png",
