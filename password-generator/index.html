@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Générateur de mot de passe</title>
+		<meta name="description" content="Génération de mot de passes côté client.">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="styles.css">
+		<link rel="manifest" href="manifest.json">
+		<link rel="icon" href="/icons/android/android-launchericon-512-512.png">
+	</head>
+	<body>
+		<div class="container">
+			<h1 class="text-center">Générateur de mot de passe</h1>
+
+			<div class="row">
+				<p class="text-center">Quel type de mot de passe voulez vous générer ?</p>
+			</div>
+			<div class="row">
+				<div class="input-group">
+					<input type="radio" id="random-password" name="password-type" class="form-control" checked value="random-password">
+					<label for="random-password">Mot de passe aléatoire</label>
+				</div>
+				<div class="input-group">
+					<input type="radio" id="word-password" name="password-type" class="form-control" value="word-password">
+					<label for="word-password">Assemblage de mots</label>
+				</div>
+			</div>
+			<div class="row">
+				<hr>
+			</div>
+			<div class="random-password-container">
+				<div class="row">
+					<input type="range" min="1" max="64" value="15" id="input-slider" name="input-slider" class="form-control">
+				</div>
+				<div class="row">
+					<p>Longueur</p>
+					<span id="sliderValue"></span>
+				</div>
+				<div class="options-container">
+					<div class="row">
+						<div class="input-group">
+							<input type="checkbox" id="include-numbers" name="include-numbers" class="form-control" checked>
+							<label for="include-numbers">Inclure des chiffres</label>
+						</div>
+						<div class="input-group">
+							<input type="checkbox" id="include-uppercase" name="include-uppercase" class="form-control" checked>
+							<label for="include-uppercase">Inclure des majuscules</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-group">
+							<input type="checkbox" id="include-lowercase" name="include-lowercase" class="form-control" checked>
+							<label for="include-lowercase">Inclure des minuscules</label>
+						</div>
+						<div class="input-group">
+							<input type="checkbox" id="include-special-chars" name="include-special-chars" class="form-control" checked>
+							<label for="include-special-chars">Inclure des caractères spéciaux</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<button id="btn-generate" class="btn btn-primary">Générer</button>
+					<button id="btn-copy" class="btn btn-primary">Copier</button>
+				</div>
+				<div class="result-container">
+					<p class="gen-password"></p>
+				</div>
+			</div>
+			<div class="word-password-container hidden">
+				<div class="row">
+					<input type="range" min="1" max="5" value="3" id="input-slider-word" name="input-slider-word" class="form-control">
+				</div>
+				<div class="row">
+					<p>Nombre de mots</p>
+					<span id="sliderWordValue"></span>
+				</div>
+				<div class="row">
+					<button id="btn-generate-word" class="btn btn-primary">Générer</button>
+					<button id="btn-copy-word" class="btn btn-primary">Copier</button>
+				</div>
+				<div class="result-container">
+					<p class="gen-password-word"></p>
+				</div>
+			</div>
+			<div class="row">
+				<hr>
+			</div>
+			<div class="install-promotion-container hidden">
+				<div class="row">
+					<p class="text-center">Installez l'application pour générer des mots de passes sans être connecté à Internet !</p>
+				</div>
+				<div class="row">
+					<button id="btn-install-app" class="btn btn-primary">Installer</button>
+				</div>
+			</div>
+		</div>
+		<script src="words.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>

@@ -1,0 +1,142 @@
+:root {
+	--primary: #1ea5e4;
+	--primary-dark: #1685b9;
+	--green: #34d399;
+	--green-dark: #26ae7c;
+	--disabled-color: #efefef;
+	--txt-xs: 0.4rem;
+	--txt-s: 0.8rem;
+	--txt-m: 1rem;
+	--txt-l: 1.2rem;
+	--txt-xl: 1.6rem;
+	--txt-xxl: 2rem;
+}
+
+.green {
+	background-color: var(--green);
+}
+
+.text-center {
+	text-align: center;
+}
+
+.hidden {
+	display: none;
+	overflow: hidden;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	max-width: 100vw;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	font-weight: 600;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+}
+
+@media screen and (min-width: 480px) {
+	.container {
+		width: 60%;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.container {
+		width: 40%;
+	}
+}
+
+.container h1 {
+	font-size: 1.4rem;
+	margin-block: 8px;
+}
+
+.row {
+	display: flex;
+	justify-content:space-around;
+	margin-block: 8px;
+}
+
+.row p, .row label {
+	flex-basis: 100%;
+}
+
+input[type='checkbox'] {
+	cursor: pointer;
+	accent-color: var(--primary);
+}
+
+.btn {
+	border: none;
+	outline: none;
+	padding: 0.8rem;
+	cursor: pointer;
+	border-radius: 0.8rem;
+	font-weight: 600;
+	font-size: var(--txt-m);
+	color: white;
+}
+
+.btn-primary {
+	background-color: var(--primary);
+}
+
+.btn-primary:hover {
+	background-color: var(--primary-dark);
+}
+
+.btn-success {
+	background-color: var(--green);
+}
+
+.btn-success:hover {
+	background-color: var(--green-dark);
+}
+
+.btn:disabled {
+	background-color: var(--disabled-color);
+}
+
+.result-container {
+	margin: 2rem 0;
+	display: flex;
+	justify-content: space-around;
+	border: 1px solid black;
+	border-radius: 0.8rem;
+	justify-self: center;
+	text-align: center;
+	height: 4rem;
+	width: 100%;
+}
+
+.result-container > p {
+	/* background-color: aquamarine; */
+	text-overflow: ellipsis;
+	overflow: hidden;
+	line-height: 4rem;
+}
+
+.options-container {
+	margin: 2rem 0;
+}
+
+hr {
+	width: 100%;
+	margin: 1rem 0;
+}
+
+input[type='range'].form-control {
+	width: 100%;
+}
