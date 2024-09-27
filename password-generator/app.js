@@ -26,6 +26,7 @@
 	const elWordPassCont = document.querySelector('.word-password-container');
 	const elGenWordBtn = document.querySelector('#btn-generate-word');
 	const elCopyWordBtn = document.querySelector('#btn-copy-word');
+	const elIncludeNumWord = document.querySelector('#include-number-word');
 	const elInstallBtn = document.querySelector('#btn-install-app');
 
 	let deferredPrompt;
@@ -143,6 +144,10 @@
 		for (let i = 0; i < inputSliderWord.value; i++) {
 			password += words[Math.floor(Math.random() * words.length)];
 			password += i != inputSliderWord.value - 1 ? '-' : '';
+		}
+
+		if (elIncludeNumWord.checked) {
+			password += '-' + Math.floor(Math.random() * 100);
 		}
 
 		elCopyWordBtn.innerText = 'Copier';
