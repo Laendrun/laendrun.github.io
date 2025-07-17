@@ -1,0 +1,99 @@
+:root {
+  --bg: #ffffff;
+  --text: #222;
+  --accent: #d81b60;
+  --muted: #777;
+  --card-bg: #f4f4f4;
+}
+
+:root.dark-mode {
+  --bg: #121212;
+  --text: #f0f0f0;
+  --accent: #ff4081;
+  --muted: #aaa;
+  --card-bg: #1e1e1e;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  font-family: system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.card.current {
+  padding: 1.5rem 2rem;
+  font-size: 1.2rem;
+  background-color: #292929;
+  border-left: 4px solid var(--accent);
+}
+
+.card h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.title,
+.artist {
+  margin: 0;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 1rem;
+  align-self: flex-start;
+  background-color: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #ff6090;
+}
+
+#toggle-theme {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+}
+
+a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+a:hover {
+  text-decoration: underline;
+}

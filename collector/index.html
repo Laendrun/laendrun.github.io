@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiss Collector</title>
+  <link rel="stylesheet" href="index_old.css">
+</head>
+
+<body>
+  <audio src="https://dr2101.ice.infomaniak.ch/dr2101.mp3" id="player" preload="none"></audio>
+  <button id="toggle-theme">Mode sombre</button>
+
+  <div class="container">
+    <div class="card">
+      <h2>Dernier titre</h2>
+      <p id="last-title" class="title">Chargement...</p>
+      <p id="last-artist" class="artist">Chargement...</p>
+    </div>
+
+    <div class="card">
+      <h2>En cours de lecture</h2>
+      <p id="current-title" class="title">Chargement...</p>
+      <p id="current-artist" class="artist">Chargement...</p>
+      <button id="play">Jouer</button>
+    </div>
+
+    <div class="card">
+      <h2>Prochain titre</h2>
+      <p id="next-title" class="title">Chargement...</p>
+      <p id="next-artist" class="artist">Chargement...</p>
+    </div>
+
+    <p style="text-align: center; font-size: 0.8rem;">
+      Source originelle: <a href="https://kisscollector.ch" target="_blank">kisscollector.ch</a>
+    </p>
+  </div>
+  <script src="index_old.js"></script>
+</body>
+
+</html>
