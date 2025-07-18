@@ -1,4 +1,4 @@
-const VERSION = '0.0.1';
+const VERSION = '0.0.2';
 const CACHE_NAME = `kiss-${VERSION}`;
 const GHPATH = '/collector';
 const APP_STATIC_RESOURCES = [

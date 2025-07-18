@@ -13,6 +13,29 @@ const formatText = (text) => {
     .join(' ');
 };
 
+const startProgress = (duration, startTime) => {
+  const progressBar = document.getElementById('progress-bar');
+  const start = new Date(startTime);
+  const end = new Date(start.getTime() + duration * 1000);
+
+  const update = () => {
+    const now = new Date();
+    const elapsed = Math.floor((now - start) / 1000);
+    let remain = Math.max(duration - elapsed, 0);
+    let percent = Math.min((elapsed / duration) * 100, 100);
+
+    progressBar.style.width = `${percent}%`;
+
+    if (remain <= 0) {
+      clearInterval(timer);
+      return;
+    }
+  };
+
+  update();
+  const timer = setInterval(update, 1000);
+};
+
 const updateDisplay = async () => {
   const currentTitle = document.getElementById('current-title');
   const currentArtist = document.getElementById('current-artist');
@@ -103,6 +126,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.log('Start time:', startTime.toISOString());
 
     console.log('Elapsed seconds:', elapsed);
+
+    startProgress(durationInSeconds, startTime);
 
     const remaining = Math.max(durationInSeconds - elapsed, MIN_DELAY);
 
