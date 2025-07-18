@@ -1,134 +1,145 @@
-const MIN_DELAY = 5; // in seconds
+const MIN_DELAY = 5;
+const AVERAGE_JINGLE_LENGTH = 7;
+const LIVE_URL = 'https://mediaone-digital.ch/cache/2101.json';
+const UPCOMING_URL = 'https://mediaone-digital.ch/cache/upcoming/2101.json';
 
-let sta = {
-  play: false,
+const state = {
+  timer: null,
+  isPlaying: false,
+  currentSongStart: null,
+  currentSongDuration: null,
+  progressInterval: null,
 };
 
-const formatText = (text) => {
-  const words = text.toLowerCase().split(' ');
-  return words
-    .map((t) => {
-      return t[0].toUpperCase() + t.substring(1);
-    })
+const capitalizeWords = (text) => {
+  return text
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(' ');
 };
 
-const startProgress = (duration, startTime) => {
-  const progressBar = document.getElementById('progress-bar');
-  const start = new Date(startTime);
-  const end = new Date(start.getTime() + duration * 1000);
+const setElemText = (id, text) => {
+  const el = document.getElementById(id);
+  if (el) el.innerText = text;
+};
 
-  const update = () => {
-    const now = new Date();
-    const elapsed = Math.floor((now - start) / 1000);
-    let remain = Math.max(duration - elapsed, 0);
-    let percent = Math.min((elapsed / duration) * 100, 100);
-
-    progressBar.style.width = `${percent}%`;
-
-    if (remain <= 0) {
-      clearInterval(timer);
-      return;
-    }
-  };
-
-  update();
-  const timer = setInterval(update, 1000);
+const fetchJSON = async (url) => {
+  const response = await fetch(url);
+  return response.json();
 };
 
 const updateDisplay = async () => {
-  const currentTitle = document.getElementById('current-title');
-  const currentArtist = document.getElementById('current-artist');
+  const { live, played } = await fetchJSON(LIVE_URL);
 
-  const lastTitle = document.getElementById('last-title');
-  const lastArtist = document.getElementById('last-artist');
+  const liveTitle = capitalizeWords(live[0].title);
+  const liveArtist = capitalizeWords(live[0].interpret);
+  const lastTitle = capitalizeWords(played[0].title);
+  const lastArtist = capitalizeWords(played[0].interpret);
 
-  const nextTitle = document.getElementById('next-title');
-  const nextArtist = document.getElementById('next-artist');
+  setElemText('current-title', liveTitle);
+  setElemText('current-artist', liveArtist);
+  document.title = `${liveArtist} - ${liveTitle}`;
 
-  let data = await fetch('https://mediaone-digital.ch/cache/2101.json');
-  let json = await data.json();
+  setElemText('last-title', lastTitle);
+  setElemText('last-artist', lastArtist);
 
-  currentTitle.innerText = formatText(json.live[0].title);
-  currentArtist.innerText = formatText(json.live[0].interpret);
-
-  document.title = `${formatText(json.live[0].interpret)} - ${formatText(
-    json.live[0].title
-  )}`;
-
-  lastTitle.innerText = formatText(json.played[0].title);
-  lastArtist.innerText = formatText(json.played[0].interpret);
-
-  let upcomingData = await fetch(
-    'https://mediaone-digital.ch/cache/upcoming/2101.json'
-  );
-  let upcomingJson = await upcomingData.json();
-
-  nextTitle.innerText = formatText(upcomingJson.upcoming[0].title);
-  nextArtist.innerText = formatText(upcomingJson.upcoming[0].interpret);
+  const { upcoming } = await fetchJSON(UPCOMING_URL);
+  setElemText('next-title', capitalizeWords(upcoming[0].title));
+  setElemText('next-artist', capitalizeWords(upcoming[0].interpret));
 
   return {
-    duration: json.live[0].duration,
-    playtime: json.live[0].detailledPlayTime + '+02:00',
+    duration: parseFloat(live[0].duration),
+    playtime: `${live[0].detailledPlayTime}+02:00`,
   };
 };
 
-window.addEventListener('DOMContentLoaded', async () => {
-  const audioPlayer = document.getElementById('player');
-  const playButton = document.getElementById('play');
-  const themeToggle = document.getElementById('toggle-theme');
-
-  playButton.addEventListener('click', () => {
-    if (!sta.play) {
-      audioPlayer.play();
-      playButton.innerText = 'Pause';
-    } else {
-      audioPlayer.pause();
-      playButton.innerText = 'Play';
-    }
-    sta.play = !sta.play;
-  });
-
+const setupTheme = (toggleBtn) => {
   const applyTheme = (theme) => {
     document.documentElement.classList.toggle('dark-mode', theme === 'dark');
-    themeToggle.textContent = theme === 'dark' ? 'Mode clair' : 'Mode sombre';
-  };
-
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.classList.contains(
-      'dark-mode'
-    )
-      ? 'dark'
-      : 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    applyTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  });
-
-  const nextUpdate = async () => {
-    const { duration, playtime } = await updateDisplay();
-    const now = new Date();
-    const durationInSeconds = parseFloat(duration);
-    const startTime = new Date(playtime);
-    const elapsed = (now - startTime) / 1000;
-
-    console.log('Current time:', now.toISOString());
-    console.log('Duration', durationInSeconds);
-    console.log('Start time:', startTime.toISOString());
-
-    console.log('Elapsed seconds:', elapsed);
-
-    startProgress(durationInSeconds, startTime);
-
-    const remaining = Math.max(durationInSeconds - elapsed, MIN_DELAY);
-
-    console.log(`Next update in ${remaining.toFixed(2)} seconds`);
-
-    setTimeout(nextUpdate, remaining * 1000);
+    toggleBtn.textContent = theme === 'dark' ? 'Mode clair' : 'Mode sombre';
+    localStorage.setItem('theme', theme);
   };
 
   const savedTheme = localStorage.getItem('theme') || 'dark';
   applyTheme(savedTheme);
 
-  nextUpdate();
+  toggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.classList.contains(
+      'dark-mode'
+    )
+      ? 'dark'
+      : 'light';
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+};
+
+const setupAudioControls = (audio, button) => {
+  button.addEventListener('click', () => {
+    state.isPlaying = !state.isPlaying;
+    if (state.isPlaying) {
+      audio.play();
+      button.innerText = 'Pause';
+    } else {
+      audio.pause();
+      button.innerText = 'Jouer';
+    }
+  });
+};
+
+const startProgress = () => {
+  const progressBar = document.getElementById('progress-bar');
+  if (state.progressInterval) clearInterval(state.progressInterval);
+
+  state.progressInterval = setInterval(() => {
+    const now = new Date();
+    const elapsed = (now - state.currentSongStart) / 1000;
+    const progress = Math.min(elapsed / state.currentSongDuration, 1);
+
+    progressBar.style.width = `${progress * 100}%`;
+
+    if (progress >= 1) {
+      clearInterval(state.progressInterval);
+    }
+  }, 1000);
+};
+
+const scheduleNextUpdate = async () => {
+  const { duration, playtime } = await updateDisplay();
+  const now = new Date();
+  const startTime = new Date(playtime);
+  const elapsed = (now - startTime) / 1000;
+  const remaining = Math.max(
+    duration - elapsed + AVERAGE_JINGLE_LENGTH,
+    MIN_DELAY
+  );
+
+  state.currentSongStart = startTime;
+  state.currentSongDuration = duration + AVERAGE_JINGLE_LENGTH;
+
+  console.log(
+    `Duration: ${duration} + ${AVERAGE_JINGLE_LENGTH} (average jingle length)`
+  );
+  console.log('Now: ', now);
+  console.log('Start time:', startTime);
+  console.log('Elapsed:', elapsed);
+  console.log('Remaining:', remaining);
+
+  console.log(`Next update in ${remaining.toFixed(2)} seconds`);
+
+  startProgress();
+
+  setTimeout(() => {
+    scheduleNextUpdate();
+  }, remaining * 1000);
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  const audioPlayer = document.getElementById('player');
+  const playButton = document.getElementById('play');
+  const themeToggle = document.getElementById('toggle-theme');
+
+  setupAudioControls(audioPlayer, playButton);
+  setupTheme(themeToggle);
+  scheduleNextUpdate();
 });
