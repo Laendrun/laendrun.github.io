@@ -29,11 +29,11 @@ const fetchJSON = async (url) => {
   return response.json();
 };
 
-const updateMediaSession = ({ title, artist, cover = null }) => {
+const updateMediaSession = ({ title, artist, artworks = [] }) => {
   navigator.mediaSession.metadata = new MediaMetadata({
     title: title,
     artist: artist,
-    artwork: [{ src: cover, sizes: '90x90', type: 'image/jpg' }],
+    artwork: artworks,
   });
 };
 
@@ -44,7 +44,6 @@ const updateDisplay = async () => {
   const liveArtist = capitalizeWords(live[0].interpret);
   const lastTitle = capitalizeWords(played[0].title);
   const lastArtist = capitalizeWords(played[0].interpret);
-  const cover = live[0].imagexs;
 
   setElemText('current-title', liveTitle);
   setElemText('current-artist', liveArtist);
@@ -61,7 +60,14 @@ const updateDisplay = async () => {
     updateMediaSession({
       title: liveTitle,
       artist: liveArtist,
-      cover: cover,
+      artworks: [
+        { src: live[0].imagexs, sizes: '90x90', type: 'image/jpeg' },
+        {
+          src: live[0].imagexs.replace('90%2C90', '512%2C512'),
+          sizes: '512x512',
+          type: 'image/jpeg',
+        },
+      ],
     });
   }
 
@@ -122,7 +128,10 @@ const startProgress = () => {
       navigator.mediaSession.setPositionState({
         duration: state.currentSongDuration,
         playbackRate: 1.0,
-        position: elapsed,
+        position:
+          elapsed >= state.currentSongDuration
+            ? state.currentSongDuration
+            : elapsed,
       });
     }
     if (progress >= 1) {
