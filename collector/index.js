@@ -108,17 +108,6 @@ const startProgress = () => {
   const progressBar = document.getElementById('progress-bar');
   if (state.progressInterval) clearInterval(state.progressInterval);
 
-  if (
-    'mediaSession' in navigator &&
-    'setPositionState' in navigator.mediaSession
-  ) {
-    navigator.mediaSession.setPositionState({
-      duration: state.currentSongDuration,
-      playbackRate: 1.0,
-      position: elapsed,
-    });
-  }
-
   state.progressInterval = setInterval(() => {
     const now = new Date();
     const elapsed = (now - state.currentSongStart) / 1000;
@@ -126,6 +115,16 @@ const startProgress = () => {
 
     progressBar.style.width = `${progress * 100}%`;
 
+    if (
+      'mediaSession' in navigator &&
+      'setPositionState' in navigator.mediaSession
+    ) {
+      navigator.mediaSession.setPositionState({
+        duration: state.currentSongDuration,
+        playbackRate: 1.0,
+        position: elapsed,
+      });
+    }
     if (progress >= 1) {
       clearInterval(state.progressInterval);
     }
