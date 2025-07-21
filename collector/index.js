@@ -29,6 +29,14 @@ const fetchJSON = async (url) => {
   return response.json();
 };
 
+const updateMediaSession = ({ title, artist, cover = null }) => {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: title,
+    artist: artist,
+    artwork: [{ src: cover, sizes: '90x90', type: 'image/jpg' }],
+  });
+};
+
 const updateDisplay = async () => {
   const { live, played } = await fetchJSON(LIVE_URL);
 
@@ -36,6 +44,7 @@ const updateDisplay = async () => {
   const liveArtist = capitalizeWords(live[0].interpret);
   const lastTitle = capitalizeWords(played[0].title);
   const lastArtist = capitalizeWords(played[0].interpret);
+  const cover = live[0].imagexs;
 
   setElemText('current-title', liveTitle);
   setElemText('current-artist', liveArtist);
@@ -47,6 +56,14 @@ const updateDisplay = async () => {
   const { upcoming } = await fetchJSON(UPCOMING_URL);
   setElemText('next-title', capitalizeWords(upcoming[0].title));
   setElemText('next-artist', capitalizeWords(upcoming[0].interpret));
+
+  if ('mediaSession' in navigator) {
+    updateMediaSession({
+      title: liveTitle,
+      artist: liveArtist,
+      cover: cover,
+    });
+  }
 
   return {
     duration: parseFloat(live[0].duration),
@@ -90,6 +107,17 @@ const setupAudioControls = (audio, button) => {
 const startProgress = () => {
   const progressBar = document.getElementById('progress-bar');
   if (state.progressInterval) clearInterval(state.progressInterval);
+
+  if (
+    'mediaSession' in navigator &&
+    'setPositionState' in navigator.mediaSession
+  ) {
+    navigator.mediaSession.setPositionState({
+      duration: state.currentSongDuration,
+      playbackRate: 1.0,
+      position: elapsed,
+    });
+  }
 
   state.progressInterval = setInterval(() => {
     const now = new Date();
