@@ -38,6 +38,7 @@ const clickLike = (_) => {
 
 const clickReset = (_) => {
   likes = 0;
+  secretMsg.classList.add('hidden');
   renderLikes();
 };
 
