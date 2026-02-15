@@ -11,12 +11,14 @@
 
 <body class="container">
   <h1>Hitster Companion</h1>
-  <video id="scanner-container"></video>
+  <button id="start-camera-btn">Démarrer le scanner</button>
+  <div id="scanner-container" class="hidden"></div>
   <div id="result" class="hidden">
     <h2 id="song-title"></h2>
+    <p id="song-artist"></p>
     <div id="platform-buttons">
-      <button id="spotify-btn">Open on Spotify</button>
-      <button id="ytm-btn">Open on YouTube Music</button>
+      <button id="spotify-btn">Ouvrir sur Spotify</button>
+      <button id="ytm-btn">Ouvrir sur YouTube Music</button>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
